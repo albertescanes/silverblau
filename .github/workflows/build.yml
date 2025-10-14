@@ -61,7 +61,7 @@ jobs:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          oci: false
+          oci: true
 
       - name: Login to Container Registry
         uses: redhat-actions/podman-login@v1
