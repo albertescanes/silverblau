@@ -13,7 +13,6 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_DESC: ${{ github.event.repository.description }}
   IMAGE_NAME: ${{ github.event.repository.name }}
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   DEFAULT_TAG: latest
@@ -44,7 +43,11 @@ jobs:
             type=sha,enable=${{ github.event_name == 'pull_request' }}
             type=ref,event=pr
           labels: |
-            org.opencontainers.image.description=${{ env.IMAGE_DESC }}
+            org.opencontainers.image.description=${{ github.event.repository.description }}
+            org.opencontainers.image.source=${{ github.repositoryUrl }}
+            org.opencontainers.image.title=${{ env.IMAGE_NAME }}
+            org.opencontainers.image.url=${{ github.repositoryUrl }}
+            org.opencontainers.image.vendor=${{ github.repository_owner }}
             containers.bootc=1
           sep-tags: " "
           sep-annotations: " "
