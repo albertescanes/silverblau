@@ -4,7 +4,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '00 10 * * *'
+    - cron: '05 10 * * *'
   push:
     branches:
       - main
@@ -61,7 +61,7 @@ jobs:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          oci: true
+          oci: false
 
       - name: Login to Container Registry
         uses: redhat-actions/podman-login@v1
