@@ -40,8 +40,7 @@ jobs:
         with:
           tags: |
             type=raw,value=${{ env.DEFAULT_TAG }}
-            type=sha,enable=${{ github.event_name == 'pull_request' }}
-            type=ref,event=pr
+            type=raw,value={{date 'YYYYMMDD'}}
           labels: |
             org.opencontainers.image.description=${{ github.event.repository.description }}
             org.opencontainers.image.source=${{ github.repositoryUrl }}
