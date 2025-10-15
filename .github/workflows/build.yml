@@ -4,12 +4,12 @@ on:
     branches:
       - main
   schedule:
-    - cron: '05 10 * * *'
+    - cron: "05 10 * * *"
   push:
     branches:
       - main
     paths-ignore:
-      - '**/README.md'
+      - "**/README.md"
   workflow_dispatch:
 
 env:
@@ -65,7 +65,7 @@ jobs:
 
       - name: Login to Container Registry
         uses: redhat-actions/podman-login@v1
-        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: github.event_name != 'pull_request'
         env:
           REGISTRY_USER: ${{ github.actor }}
           REGISTRY_PASSWORD: ${{ github.token }}
@@ -76,7 +76,7 @@ jobs:
 
       - name: Push to Container Registry
         uses: redhat-actions/push-to-registry@v2
-        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: github.event_name != 'pull_request'
         with:
           registry: ${{ env.IMAGE_REGISTRY }}
           image: ${{ env.IMAGE_NAME }}
