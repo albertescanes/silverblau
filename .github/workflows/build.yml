@@ -46,7 +46,7 @@ jobs:
             org.opencontainers.image.vendor=${{ github.repository_owner }}
             org.opencontainers.image.version=${{ env.DEFAULT_TAG }}.{{date 'YYYYMMDD'}}
             containers.bootc=1
-          sep-tags: ","
+          sep-tags: " "
           #sep-annotations: " "
 
       - name: Build image
