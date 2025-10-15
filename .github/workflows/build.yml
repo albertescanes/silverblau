@@ -47,7 +47,7 @@ jobs:
             org.opencontainers.image.version=${{ env.DEFAULT_TAG }}.{{date 'YYYYMMDD'}}
             containers.bootc=1
           sep-tags: " "
-          #sep-annotations: " "
+          sep-annotations: " "
 
       - name: Build image
         uses: redhat-actions/buildah-build@v2
