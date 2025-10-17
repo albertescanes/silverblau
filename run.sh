@@ -20,3 +20,4 @@ dnf -y remove \
     gnome-shell-extension-{apps-menu,launch-new-instance,places-menu,window-list,background-logo}
 
 dnf -y clean all
+rm -rf /var/{log,cache,lib}/*
