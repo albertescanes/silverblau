@@ -17,7 +17,7 @@ dnf -y swap \
 dnf -y remove \
     firefox-langpacks \
     firefox \
-    gnome-shell-extension-{apps-menu,launch-new-instance,places-menu,window-list,background-logo}
+    gnome-shell-extension-{apps-menu,launch-new-instance,places-menu,window-list}
 
 dnf -y clean all
 rm -rf /var/{log,cache,lib}/*
