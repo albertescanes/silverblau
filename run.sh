@@ -76,6 +76,7 @@ dnf -y install \
 
 # Add extra packages
 dnf -y install \
+    fastfetch \
     google-noto-sans-balinese-fonts \
     google-noto-sans-cjk-fonts \
     google-noto-sans-javanese-fonts \
@@ -94,6 +95,9 @@ curl --retry 3 -Lo /etc/flatpak/remotes.d/flathub.flatpakrepo https://dl.flathub
 
 # Don't enable Fedora Flatpak repo
 systemctl disable flatpak-add-fedora-repos.service
+
+# Enable automatic updates
+systemctl enable rpm-ostreed-automatic.timer
 
 # Install game-devices-udev
 mkdir -p /tmp/game-devices-udev/
