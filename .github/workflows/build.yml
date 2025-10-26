@@ -1,0 +1,78 @@
+name: Build and push container image
+on:
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "05 10 * * *"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/README.md"
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: ${{ github.event.repository.name }}
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  DEFAULT_TAG: latest
+
+jobs:
+  build-and-push:
+    name: Build and push image
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Image meta
+        uses: docker/metadata-action@v5
+        id: meta
+        with:
+          tags: |
+            type=raw,value=${{ env.DEFAULT_TAG }}
+            type=raw,value=${{ env.DEFAULT_TAG }}.{{date 'YYYYMMDD'}}
+            type=raw,value={{date 'YYYYMMDD'}}
+          labels: |
+            org.opencontainers.image.description=${{ github.event.repository.description }}
+            org.opencontainers.image.source=${{ github.repositoryUrl }}
+            org.opencontainers.image.title=${{ env.IMAGE_NAME }}
+            org.opencontainers.image.url=${{ github.repositoryUrl }}
+            org.opencontainers.image.vendor=${{ github.repository_owner }}
+            org.opencontainers.image.version=${{ env.DEFAULT_TAG }}.{{date 'YYYYMMDD'}}
+            containers.bootc=1
+          sep-tags: " "
+          sep-annotations: " "
+
+      - name: Build image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          containerfiles: |
+            ./Containerfile
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Login to Container Registry
+        uses: redhat-actions/podman-login@v1
+        if: github.event_name != 'pull_request'
+        env:
+          REGISTRY_USER: ${{ github.actor }}
+          REGISTRY_PASSWORD: ${{ github.token }}
+        with:
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+
+      - name: Push to Container Registry
+        uses: redhat-actions/push-to-registry@v2
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ${{ env.IMAGE_REGISTRY }}
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ steps.meta.outputs.tags }}
