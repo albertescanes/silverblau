@@ -2,33 +2,17 @@
 
 set -xeuo pipefail
 
-# Default installed OpenCL-ICD-Loader conflicts with mesa-libOpenCL 
-dnf -y swap OpenCL-ICD-Loader ocl-icd
 
-# Install negativo17 repo and override packages
-dnf config-manager addrepo --from-repofile="https://negativo17.org/repos/fedora-multimedia.repo"
+# RPM Fusion needs the openh264 library repository to be explicitly enabled
+dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
-dnf config-manager setopt fedora-multimedia.priority=90
+# Install RPM Fusion repositories
+dnf -y install \
+    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-OVERRIDE_PACKAGES="\
-intel-gmmlib \
-intel-mediasdk \
-intel-vpl-gpu-rt \
-libheif \
-libva \
-libva-intel-media-driver \
-mesa-dri-drivers \
-mesa-filesystem \
-mesa-libEGL \
-mesa-libgbm \
-mesa-libGL \
-mesa-va-drivers \
-mesa-vulkan-drivers"
-
-dnf -y install 'dnf-command(versionlock)'
-
-dnf -y distro-sync --skip-unavailable --repo='fedora-multimedia' $OVERRIDE_PACKAGES
-dnf -y versionlock add $OVERRIDE_PACKAGES
+dnf -y swap ffmpeg-free ffmpeg --allowerasing
+dnf -y swap mesa-va-drivers mesa-va-drivers-freeworld
 
 # Remove Firefox rpm and unused repos
 dnf -y remove \
@@ -54,40 +38,15 @@ dnf -y remove \
     gnome-shell-extension-{apps-menu,launch-new-instance,places-menu,window-list} \
     ptyxis
 
-# Add extra codecs
-dnf -y install \
-    fdk-aac \
-    ffmpeg \
-    ffmpeg-libs \
-    ffmpegthumbnailer \
-    heif-pixbuf-loader \
-    intel-vaapi-driver \
-    libavcodec \
-    libcamera \
-    libcamera-gstreamer \
-    libcamera-ipa \
-    libcamera-tools \
-    libfdk-aac \
-    libheif \
-    libva-utils \
-    mesa-libxatracker \
-    pipewire-libs-extra \
-    pipewire-plugin-libcamera
-
 # Add extra packages
 dnf -y install \
     fastfetch \
-    google-noto-sans-balinese-fonts \
-    google-noto-sans-cjk-fonts \
-    google-noto-sans-javanese-fonts \
-    google-noto-sans-sundanese-fonts \
     openrgb-udev-rules \
     vim \
     wl-clipboard \
     xeyes
 
-# Install Container Management packages (buildah, skopeo, flatpak-builder)
-dnf group -y install container-management --with-optional
+dnf -y group install container-management --with-optional
 
 # Install Flathub repo
 mkdir -p /etc/flatpak/remotes.d/
