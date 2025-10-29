@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-silverblue:43
+FROM quay.io/fedora/fedora-silverblue:rawhide
 
 COPY --chmod=0644 rootfs/ /
 COPY --chmod=0755 run.sh /tmp/
