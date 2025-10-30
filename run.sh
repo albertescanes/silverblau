@@ -41,9 +41,9 @@ dnf -y remove \
 # Add extra packages
 dnf -y install \
     fastfetch \
+    make \
     openrgb-udev-rules \
     vim \
-    wl-clipboard \
     xeyes
 
 dnf -y group install container-management --with-optional
