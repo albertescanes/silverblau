@@ -1,0 +1,48 @@
+name: Build
+
+on:
+  push:
+    branches: main
+    paths: Containerfile
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: ${{ github.event.repository.name }}
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  DEFAULT_TAG: latest
+
+jobs:
+  build-push:
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Build
+        id: build
+        uses: redhat-actions/buildah-build@v3
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.DEFAULT_TAG }} ${{ github.sha }}
+          oci: true
+          containerfiles: ./Containerfile
+          buildah-image: quay.io/buildah/stable
+
+      - name: Log in to container registry
+        uses: redhat-actions/podman-login@v2
+        with:
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+
+      - name: Push to container registry
+        uses: redhat-actions/push-to-registry@v3
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ steps.build.outputs.tags }}
+          registry: ${{ env.IMAGE_REGISTRY }}
