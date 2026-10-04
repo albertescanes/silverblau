@@ -25,7 +25,6 @@ dnf -y swap \
 
 # Personalizaciones
 dnf -y remove firefox firefox-langpacks
-dnf -y remove gnome-software-rpm-ostree
 dnf -y swap ptyxis gnome-console
 EOF
 
