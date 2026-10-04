@@ -1,4 +1,4 @@
-FROM quay.io/fedora-ostree-desktops/silverblue:45@sha256:21ae17568ce34c6565497a1326b5fc1739cf9d452848875c1b198d3da3c89c14
+FROM quay.io/fedora-ostree-desktops/silverblue:45@sha256:524725772c4e724877049aaa38b3f9ecb1f693dc5f3ceaabaae00e72e5e1cb71
 
 RUN --mount=type=tmpfs,dst=/var \
     --mount=type=tmpfs,dst=/tmp \
