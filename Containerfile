@@ -3,6 +3,7 @@ FROM quay.io/fedora-ostree-desktops/silverblue:45@sha256:524725772c4e724877049aa
 RUN --mount=type=tmpfs,dst=/var \
     --mount=type=tmpfs,dst=/tmp \
     --mount=type=tmpfs,dst=/run \
+    --mount=type=tmpfs,dst=/boot \
     --mount=type=cache,dst=/var/cache/libdnf5 \
     <<EOF
 set -xeuo pipefail
@@ -24,8 +25,8 @@ dnf -y swap \
     mesa-vulkan-drivers-freeworld
 
 # Personalizaciones
-dnf -y remove firefox firefox-langpacks
+dnf -y remove firefox
 dnf -y swap ptyxis gnome-console
 EOF
 
-RUN rm -rf /var/* && mkdir /var/tmp && bootc container lint --fatal-warnings
+RUN rm -rf /var/* && mkdir /var/tmp && chmod 1777 /var/tmp && bootc container lint --fatal-warnings
