@@ -2,15 +2,14 @@
 
 Imagen bootc personalizada basada en **Fedora Silverblue**, con Steam, códecs Mesa freeworld y algunos ajustes de escritorio.
 
-## ¿Qué incluye?
+## Contenido
 
-- **Steam** (paquete RPM)
-- **Mesa freeworld** con códecs para AMD (64 y 32 bits)
-  - `mesa-va-drivers-freeworld` (+ `.i686`)
-  - Sustitución de `mesa-vulkan-drivers` por `mesa-vulkan-drivers-freeworld`
-- **Ajustes varios**:
-  - Elimina Firefox
-  - Reemplaza `ptyxis` por `gnome-console`
+- **Steam**
+- **Códecs GStreamer**: `gstreamer1-plugins-bad-freeworld`, `gstreamer1-plugins-ugly`
+- **Mesa freeworld** (VA-API + Vulkan, 64 y 32 bits) para AMD
+- **Personalizaciones**:
+  - Firefox eliminado
+  - Ptyxis reemplazado por Consola
 
 ## Rebase desde Fedora Silverblue
 
