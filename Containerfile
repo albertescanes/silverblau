@@ -30,3 +30,6 @@ dnf -y swap ptyxis gnome-console
 EOF
 
 RUN rm -rf /var/* && mkdir /var/tmp && chmod 1777 /var/tmp && bootc container lint --fatal-warnings
+
+LABEL containers.bootc 1
+LABEL ostree.bootable 1
