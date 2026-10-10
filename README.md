@@ -1,6 +1,6 @@
 # silverblau
 
-Imagen bootc personalizada basada en **Fedora Silverblue**, con Steam, códecs Mesa freeworld y algunos ajustes de escritorio.
+Imagen bootc personalizada basada en **Fedora Silverblue**.
 
 ## Contenido
 
