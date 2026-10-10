@@ -13,16 +13,18 @@ dnf -y install \
     https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-# Steam (RPM)
+# Steam
 dnf -y install steam
 
-# Mesa freeworld (códecs AMD, 32 y 64 bits)
+# Códecs (GStreamer)
 dnf -y install \
-    mesa-va-drivers-freeworld \
-    mesa-va-drivers-freeworld.i686
-dnf -y swap \
-    mesa-vulkan-drivers \
-    mesa-vulkan-drivers-freeworld
+    gstreamer1-plugins-bad-freeworld \
+    gstreamer1-plugins-ugly
+
+# Mesa freeworld (AMD): VA-API + Vulkan, 64 y 32 bits
+dnf -y install mesa-va-drivers-freeworld.{i686,x86_64}
+dnf -y swap mesa-vulkan-drivers{,-freeworld}
+dnf -y swap mesa-vulkan-drivers{,-freeworld}.i686
 
 # Personalizaciones
 dnf -y remove firefox
